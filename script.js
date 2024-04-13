@@ -41,9 +41,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Send transaction
         const sendTransactionBtn = document.getElementById('sendTransactionBtn');
         sendTransactionBtn.addEventListener('click', async () => {
-            // Add code to send transaction
+            const senderAddress = document.getElementById('senderAddress').value;
+            const senderPrivateKey = document.getElementById('senderPrivateKey').value;
+            const receiverAddress = document.getElementById('receiverAddress').value;
+            const amount = document.getElementById('amount').value;
+            
+            try {
+                // Add code to send transaction
+                // For demonstration purposes, let's assume the transaction is successful
+                // You should replace this with actual code to send a transaction
+                const transactionResult = await sendTransaction(senderAddress, senderPrivateKey, receiverAddress, amount);
+
+                // Log a message to the console indicating a successful transaction
+                console.log('Transaction successful! Transaction hash:', transactionResult.transactionHash);
+            } catch (error) {
+                console.error('Error sending transaction:', error.message);
+            }
         });
     } catch (error) {
         console.error('Error:', error.message);
     }
 });
+
+async function sendTransaction(senderAddress, senderPrivateKey, receiverAddress, amount) {
+    // Replace this with your actual code to send a transaction
+    // For demonstration purposes, we're just returning a mock transaction result
+    return { transactionHash: 'mockTransactionHash' };
+}
