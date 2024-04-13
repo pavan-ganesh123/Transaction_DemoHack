@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Function to fetch and display wallet information
         const displayWalletInfo = async () => {
             try {
-                const response = await fetch('/generateWallet');
+                const response = await fetch('/generateWallet', {
+                    method: 'GET' // Correct method to send a GET request
+                });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch wallet information: ${response.status} ${response.statusText}`);
                 }
