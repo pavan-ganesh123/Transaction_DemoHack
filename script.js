@@ -1,7 +1,3 @@
-// Instead of using require, ensure your script.js is loaded after the HTML content
-// and directly use functions or methods available in the global scope or provided by browser APIs.
-// For example, you can use fetch to make HTTP requests in the browser.
-
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         // Function to fetch and display wallet information
