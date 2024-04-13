@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Function to fetch and display wallet information
         const displayWalletInfo = async () => {
             try {
-                const response = await fetch('/wallet/generate', { // Updated endpoint URL
+                const response = await fetch('/wallet/generate', {
                     method: 'GET'
                 });
                 if (!response.ok) {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('privateKey').innerText = privateKey;
 
                 // Check balance
-                const balanceResponse = await fetch(`/wallet/balance/${address}`); // Updated endpoint URL
+                const balanceResponse = await fetch(`/wallet/balance/${address}`);
                 if (!balanceResponse.ok) {
                     throw new Error(`Failed to fetch balance: ${balanceResponse.status} ${balanceResponse.statusText}`);
                 }
