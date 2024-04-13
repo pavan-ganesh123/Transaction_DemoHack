@@ -1,48 +1,53 @@
-const express = require('express');
-const app = express();
+// Instead of using require, ensure your script.js is loaded after the HTML content
+// and directly use functions or methods available in the global scope or provided by browser APIs.
+// For example, you can use fetch to make HTTP requests in the browser.
 
-// Middleware to parse JSON request bodies
-app.use(express.json());
-
-// Route handler for generating wallet information
-app.get('/generateWallet', (req, res) => {
+document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Logic to generate wallet information (address and private key)
-        const wallet = generateWallet(); // Implement this function to generate wallet info
+        // Function to fetch and display wallet information
+        const displayWalletInfo = async () => {
+            try {
+                const response = await fetch('/generateWallet', {
+                    method: 'GET'
+                });
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch wallet information: ${response.status} ${response.statusText}`);
+                }
+                const { address, privateKey } = await response.json();
+                document.getElementById('address').innerText = address;
+                document.getElementById('privateKey').innerText = privateKey;
 
-        // Construct JSON response object
-        const walletInfo = {
-            address: wallet.address,
-            privateKey: wallet.privateKey
+                // Check balance
+                const balanceResponse = await fetch(`/checkBalance/${address}`);
+                if (!balanceResponse.ok) {
+                    throw new Error(`Failed to fetch balance: ${balanceResponse.status} ${balanceResponse.statusText}`);
+                }
+                const { balance } = await balanceResponse.json();
+                document.getElementById('balance').innerText = balance;
+            } catch (error) {
+                console.error('Error fetching wallet information:', error.message);
+            }
         };
 
-        // Send JSON response
-        res.json(walletInfo);
+        // Display wallet information when the page loads
+        await displayWalletInfo();
+
+        // Add event listener for "Generate Wallet" button
+        const generateWalletBtn = document.getElementById('generateWalletBtn');
+        generateWalletBtn.addEventListener('click', async () => {
+            try {
+                await displayWalletInfo();
+            } catch (error) {
+                console.error('Error generating wallet:', error.message);
+            }
+        });
+
+        // Send transaction
+        const sendTransactionBtn = document.getElementById('sendTransactionBtn');
+        sendTransactionBtn.addEventListener('click', async () => {
+            // Add code to send transaction
+        });
     } catch (error) {
-        // Handle errors
-        console.error('Error generating wallet:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error:', error.message);
     }
-});
-
-// Function to generate wallet information (placeholder)
-function generateWallet() {
-    // Implement logic to generate wallet information here
-    // For example, you can use libraries like ethereumjs-wallet to create a new wallet
-    // For simplicity, let's create a dummy wallet
-    const address = '0x123abc...';
-    const privateKey = 'abcdef123456...';
-    return { address, privateKey };
-}
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Internal Server Error' });
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
 });
